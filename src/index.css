@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* ─── Custom Theme ─── */
+@theme {
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Lodge palette */
+  --color-forest-50: #f0f5f1;
+  --color-forest-100: #dce8de;
+  --color-forest-200: #b8d1bc;
+  --color-forest-300: #8ab592;
+  --color-forest-400: #5c9a6a;
+  --color-forest-500: #3d7a4a;
+  --color-forest-600: #2f613a;
+  --color-forest-700: #264d2f;
+  --color-forest-800: #1f3d27;
+  --color-forest-900: #1a3221;
+
+  --color-earth-50: #faf6f1;
+  --color-earth-100: #f0e6d6;
+  --color-earth-200: #e2ceaf;
+  --color-earth-300: #d1b185;
+  --color-earth-400: #c09660;
+  --color-earth-500: #a87a42;
+  --color-earth-600: #8b6235;
+  --color-earth-700: #6e4d2b;
+  --color-earth-800: #563d23;
+  --color-earth-900: #42301c;
+
+  --color-water-50: #eff8fa;
+  --color-water-100: #d6eef4;
+  --color-water-200: #addde9;
+  --color-water-300: #7ac5d9;
+  --color-water-400: #4babc5;
+  --color-water-500: #2e8da8;
+  --color-water-600: #26728a;
+  --color-water-700: #235c70;
+  --color-water-800: #224c5c;
+  --color-water-900: #21404e;
+
+  --color-cream: #fdfbf7;
+  --color-warm-white: #faf8f5;
+  --color-lodge-dark: #1c1917;
+  --color-lodge-charcoal: #292524;
+  --color-gold: #c8a951;
+  --color-gold-light: #e8d590;
+}
+
+/* ─── Base Styles ─── */
+@layer base {
+  body {
+    @apply font-body text-lodge-charcoal bg-warm-white antialiased;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+/* ─── Parallax Forest Animations ─── */
+@keyframes mistDrift {
+  0% { transform: translateX(-8%) scaleX(1.1); opacity: 0.3; }
+  50% { opacity: 0.5; }
+  100% { transform: translateX(8%) scaleX(1.2); opacity: 0.3; }
+}
+
+@keyframes auroraDrift1 {
+  0%   { transform: translateX(-20%) scaleX(0.9); opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(20%) scaleX(1.25); opacity: 0.5; }
+}
+
+@keyframes auroraDrift2 {
+  0%   { transform: translateX(18%) scaleY(0.8); opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(-18%) scaleY(1.2); opacity: 0.6; }
+}
+
+@keyframes auroraDrift3 {
+  0%   { transform: translateX(15%) scale(0.9); opacity: 0.4; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(-15%) scale(1.2); opacity: 0.6; }
+}
+}
