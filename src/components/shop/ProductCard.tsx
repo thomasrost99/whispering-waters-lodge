@@ -37,27 +37,41 @@ export default function ProductCard({ product }: ProductCardProps) {
   const price = selectedVariant?.price ?? product.variants[0]?.price;
   const available = selectedVariant?.available ?? false;
 
-  // Find back image by matching the variant slug in the Printful filename pattern:
-  // {product}-{variant-slug}-front-{hash}.jpg  ↔  {product}-{variant-slug}-back-{hash}.jpg
-  const variantImageIds = new Set(product.variants.map((v) => v.image?.id).filter(Boolean));
-  const extraImages = product.images.filter((img) => !variantImageIds.has(img.id));
+  const variantImageIds = useMemo(
+    () => new Set(product.variants.map((v) => v.image?.id).filter(Boolean)),
+    [product.variants]
+  );
+
+  // Extract the Printful slug: everything before -front- or -back- in the filename
   const getVariantSlug = (src: string) => {
     const filename = src.split("/").pop()?.split("?")[0] ?? "";
     const match = filename.match(/^(.+?)-(front|back)-/i);
     return match ? match[1].toLowerCase() : "";
   };
-  const variantSlug = image ? getVariantSlug(image.src) : "";
-  const backImage = extraImages.find((img) => {
-    const src = img.src.toLowerCase();
-    return src.includes("back") && (variantSlug ? getVariantSlug(img.src) === variantSlug : true);
-  });
 
-  // Carousel: front image + matched back image (if any)
+  // Build carousel as [front, back] regardless of which side Shopify assigned as the variant image
   const carouselImages = useMemo(() => {
-    const imgs = image ? [image] : [];
-    if (backImage) imgs.push(backImage);
-    return imgs;
-  }, [image, backImage]);
+    if (!image) return [];
+    const extraImgs = product.images.filter((img) => !variantImageIds.has(img.id));
+    const slug = getVariantSlug(image.src);
+    const isVariantBack = image.src.toLowerCase().includes("-back-");
+
+    if (!slug) return [image]; // no front/back pattern (mug, etc.) — single image
+
+    if (isVariantBack) {
+      // Variant image is the back; look for matching front anywhere in product images
+      const front = product.images.find(
+        (img) => getVariantSlug(img.src) === slug && img.src.toLowerCase().includes("-front-")
+      );
+      return front ? [front, image] : [image];
+    } else {
+      // Variant image is the front; look for matching back in extra images
+      const back = extraImgs.find(
+        (img) => img.src.toLowerCase().includes("-back-") && getVariantSlug(img.src) === slug
+      );
+      return back ? [image, back] : [image];
+    }
+  }, [image, product.images, variantImageIds]);
 
   // Carousel index resets automatically when the variant image changes by pairing index with imageId
   const [carousel, setCarousel] = useState<{ imageId: string | undefined; index: number }>(
