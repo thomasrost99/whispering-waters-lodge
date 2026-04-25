@@ -32,7 +32,7 @@ const subtitleColorMap = {
  */
 export default function PageHero({ eyebrow, title, subtitle, icon, gradient }: PageHeroProps) {
   return (
-    <section className={`relative py-20 sm:py-28 bg-gradient-to-br ${gradientMap[gradient]} overflow-hidden`}>
+    <section className={`relative min-h-[280px] sm:min-h-[340px] flex items-center bg-gradient-to-br ${gradientMap[gradient]} overflow-hidden`}>
       {/* Subtle texture overlay */}
       <div className="absolute inset-0 opacity-10">
         <div
@@ -43,7 +43,7 @@ export default function PageHero({ eyebrow, title, subtitle, icon, gradient }: P
         />
       </div>
 
-      <div className="relative max-w-4xl mx-auto text-center px-4">
+      <div className="relative w-full max-w-4xl mx-auto text-center px-4">
         {icon && (
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-6">
             {icon}
