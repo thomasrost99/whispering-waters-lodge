@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import type { ShopifyProduct, ShopifyVariant } from "../../types/shopify";
 import { useShopify } from "../../context/ShopifyContext";
 
@@ -37,122 +37,47 @@ export default function ProductCard({ product }: ProductCardProps) {
   const price = selectedVariant?.price ?? product.variants[0]?.price;
   const available = selectedVariant?.available ?? false;
 
-  const variantImageIds = useMemo(
-    () => new Set(product.variants.map((v) => v.image?.id).filter(Boolean)),
-    [product.variants]
-  );
-
-  // Extract the Printful slug: everything before -front- or -back- in the filename
-  const getVariantSlug = (src: string) => {
-    const filename = src.split("/").pop()?.split("?")[0] ?? "";
-    const match = filename.match(/^(.+?)-(front|back)-/i);
-    return match ? match[1].toLowerCase() : "";
-  };
-
-  // Build carousel as [front, back] regardless of which side Shopify assigned as the variant image
-  const carouselImages = useMemo(() => {
+  // All images that share the same base slug as the current variant image
+  // e.g. "unisex-classic-tee-navy" matches -front-, -back-, -right-, -left-
+  const viewImages = useMemo(() => {
     if (!image) return [];
-    const extraImgs = product.images.filter((img) => !variantImageIds.has(img.id));
-    const slug = getVariantSlug(image.src);
-    const isVariantBack = image.src.toLowerCase().includes("-back-");
+    const filename = image.src.split("/").pop()?.split("?")[0] ?? "";
+    // Extract base slug: everything up to the last -<angle>- segment before the hash
+    const slugMatch = filename.match(/^(.+?)-(front|back|left|right|side)-/i);
+    if (!slugMatch) return [image]; // no angle in filename (mug, etc.)
+    const slug = slugMatch[1].toLowerCase();
+    const angleOrder: Record<string, number> = { front: 0, back: 1, right: 2, left: 3, side: 4 };
+    const matched = product.images.filter((img) => {
+      const f = img.src.split("/").pop()?.split("?")[0] ?? "";
+      const m = f.match(/^(.+?)-(front|back|left|right|side)-/i);
+      return m && m[1].toLowerCase() === slug;
+    });
+    matched.sort((a, b) => {
+      const angleA = (a.src.match(/-(front|back|left|right|side)-/i) ?? [])[1]?.toLowerCase() ?? "";
+      const angleB = (b.src.match(/-(front|back|left|right|side)-/i) ?? [])[1]?.toLowerCase() ?? "";
+      return (angleOrder[angleA] ?? 9) - (angleOrder[angleB] ?? 9);
+    });
+    return matched.length > 0 ? matched : [image];
+  }, [image, product.images]);
 
-    if (!slug) return [image]; // no front/back pattern (mug, etc.) — single image
-
-    if (isVariantBack) {
-      // Variant image is the back; look for matching front anywhere in product images
-      const front = product.images.find(
-        (img) => getVariantSlug(img.src) === slug && img.src.toLowerCase().includes("-front-")
-      );
-      return front ? [front, image] : [image];
-    } else {
-      // Variant image is the front; look for matching back in extra images
-      const back = extraImgs.find(
-        (img) => img.src.toLowerCase().includes("-back-") && getVariantSlug(img.src) === slug
-      );
-      return back ? [image, back] : [image];
-    }
-  }, [image, product.images, variantImageIds]);
-
-  // Carousel index resets automatically when the variant image changes by pairing index with imageId
-  const [carousel, setCarousel] = useState<{ imageId: string | undefined; index: number }>(
-    () => ({ imageId: image?.id, index: 0 })
+  // Selected thumbnail index — reset when variant image changes
+  const [thumbIndex, setThumbIndex] = useState<{ imageId: string | undefined; idx: number }>(
+    () => ({ imageId: image?.id, idx: 0 })
   );
-  const carouselIndex = carousel.imageId === image?.id ? carousel.index : 0;
-  const setCarouselIndex = (idx: number | ((prev: number) => number)) =>
-    setCarousel({ imageId: image?.id, index: typeof idx === "function" ? idx(carouselIndex) : idx });
-
-  const touchStartX = useRef<number | null>(null);
-  const prevSlide = () => setCarouselIndex((i) => (i - 1 + carouselImages.length) % carouselImages.length);
-  const nextSlide = () => setCarouselIndex((i) => (i + 1) % carouselImages.length);
-
-  const handleTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const delta = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(delta) > 40) { if (delta > 0) nextSlide(); else prevSlide(); }
-    touchStartX.current = null;
-  };
+  const activeIndex = thumbIndex.imageId === image?.id ? thumbIndex.idx : 0;
+  const selectThumb = (idx: number) => setThumbIndex({ imageId: image?.id, idx });
+  const activeImage = viewImages[activeIndex] ?? viewImages[0];
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-earth-100 flex flex-col">
-      {/* Carousel — image stays fully contained, no extra strip */}
-      <div
-        className="aspect-square bg-earth-50 relative overflow-hidden select-none"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {carouselImages.length > 0 ? (
-          <>
-            {/* Sliding strip */}
-            <div
-              className="flex h-full transition-transform duration-300 ease-in-out"
-              style={{
-                width: `${carouselImages.length * 100}%`,
-                transform: `translateX(-${carouselIndex * (100 / carouselImages.length)}%)`,
-              }}
-            >
-              {carouselImages.map((img) => (
-                <div key={img.id} className="h-full flex-shrink-0" style={{ width: `${100 / carouselImages.length}%` }}>
-                  <img src={img.src} alt={img.altText || product.title} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-
-            {carouselImages.length > 1 && (
-              <>
-                {/* Left / right invisible click zones — full height, half width each */}
-                <button
-                  onClick={prevSlide}
-                  aria-label="Previous image"
-                  className={`absolute left-0 top-0 w-1/2 h-full cursor-pointer transition-opacity duration-150 ${carouselIndex === 0 ? "pointer-events-none" : ""}`}
-                />
-                <button
-                  onClick={nextSlide}
-                  aria-label="Next image"
-                  className={`absolute right-0 top-0 w-1/2 h-full cursor-pointer transition-opacity duration-150 ${carouselIndex === carouselImages.length - 1 ? "pointer-events-none" : ""}`}
-                />
-
-                {/* Frosted pill with dash indicators — bottom-center, always visible */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 backdrop-blur-sm pointer-events-none">
-                  {carouselImages.map((img, i) => (
-                    <span
-                      key={img.id}
-                      className={`block rounded-full transition-all duration-300 ${
-                        i === carouselIndex ? "w-4 h-2 bg-white" : "w-2 h-2 bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                {/* "Tap to see back" hint on first slide only */}
-                {carouselIndex === 0 && (
-                  <div className="absolute top-2.5 right-2.5 text-[10px] font-medium text-white bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full pointer-events-none">
-                    Back →
-                  </div>
-                )}
-              </>
-            )}
-          </>
+      {/* Main image */}
+      <div className="aspect-square bg-earth-50 overflow-hidden">
+        {activeImage ? (
+          <img
+            src={activeImage.src}
+            alt={activeImage.altText || product.title}
+            className="w-full h-full object-cover"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-earth-300">
             <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -161,6 +86,26 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </div>
+
+      {/* Thumbnail row — only shown when there are multiple views */}
+      {viewImages.length > 1 && (
+        <div className="flex gap-2 px-4 pt-3">
+          {viewImages.map((img, i) => (
+            <button
+              key={img.id}
+              onClick={() => selectThumb(i)}
+              aria-label={`View image ${i + 1}`}
+              className={`w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 transition-all duration-150 ring-offset-1 ${
+                i === activeIndex
+                  ? "ring-2 ring-forest-600 opacity-100"
+                  : "ring-1 ring-earth-200 opacity-60 hover:opacity-100"
+              }`}
+            >
+              <img src={img.src} alt="" className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Content */}
       <div className="p-5 flex flex-col gap-3 flex-1">
