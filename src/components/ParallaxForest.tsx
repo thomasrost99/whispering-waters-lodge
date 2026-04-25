@@ -10,7 +10,10 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let ticking = false;
-    const speeds = [0.04, 0.08, 0.14, 0.22, 0.32];
+    const isMobile = window.innerWidth < 768;
+    const speeds = isMobile
+      ? [0.02, 0.04, 0.07, 0.11, 0.16]
+      : [0.04, 0.08, 0.14, 0.22, 0.32];
 
     function onScroll() {
       if (ticking) return;
@@ -43,7 +46,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
       {/* ── Parallax layers (behind content) ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         {/* Sky */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060e09] via-[#0a1a10] via-40% to-[#0f2818]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020605] from-0% via-[#020605] via-25% via-[#071410] via-55% to-[#0f2818]" />
 
         {/* Stars */}
         <Stars />
@@ -55,14 +58,14 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Mountains */}
         <div ref={setRef(0)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" className="block w-full h-[45vh]">
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" className="block w-full h-[60vh] md:h-[45vh]">
             <path d="M0,400 L0,280 Q180,140 360,220 Q540,100 720,200 Q900,80 1080,180 Q1260,120 1440,240 L1440,400Z" fill="#11291a" />
           </svg>
         </div>
 
         {/* Back trees */}
         <div ref={setRef(1)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="none" className="block w-full h-[55vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[75vh] md:h-[55vh]">
             <g fill="#152e1d">{backTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#152e1d" />
           </svg>
@@ -75,7 +78,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Mid trees */}
         <div ref={setRef(3)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="none" className="block w-full h-[62vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[88vh] md:h-[62vh]">
             <g fill="#1c3b25">{midTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#1c3b25" />
           </svg>
@@ -83,7 +86,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Front trees */}
         <div ref={setRef(4)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="none" className="block w-full h-[72vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[105vh] md:h-[72vh]">
             <g fill="#264d2f">{frontTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#264d2f" />
           </svg>
@@ -146,7 +149,7 @@ function Aurora() {
       />
       {/* Band 1 — green */}
       <div
-        className="absolute inset-x-0 top-[5%] h-[60%]"
+        className="absolute -left-[25%] -right-[25%] top-[15%] h-[60%]"
         style={{
           background: "radial-gradient(ellipse 80% 50% at 30% 40%, rgba(72,187,120,0.35) 0%, transparent 70%)",
           animation: "auroraDrift1 6s ease-in-out infinite alternate",
@@ -154,7 +157,7 @@ function Aurora() {
       />
       {/* Band 2 — teal */}
       <div
-        className="absolute inset-x-0 top-[8%] h-[55%]"
+        className="absolute -left-[25%] -right-[25%] top-[18%] h-[55%]"
         style={{
           background: "radial-gradient(ellipse 70% 45% at 65% 35%, rgba(56,178,172,0.32) 0%, transparent 70%)",
           animation: "auroraDrift2 5s ease-in-out infinite alternate",
@@ -162,7 +165,7 @@ function Aurora() {
       />
       {/* Band 3 — purple */}
       <div
-        className="absolute inset-x-0 top-[2%] h-[50%]"
+        className="absolute -left-[25%] -right-[25%] top-[12%] h-[50%]"
         style={{
           background: "radial-gradient(ellipse 50% 40% at 50% 30%, rgba(139,92,246,0.22) 0%, transparent 70%)",
           animation: "auroraDrift3 7s ease-in-out infinite alternate",
@@ -170,7 +173,7 @@ function Aurora() {
       />
       {/* Bright streak */}
       <div
-        className="absolute inset-x-0 top-[15%] h-[30%] blur-xl"
+        className="absolute -left-[25%] -right-[25%] top-[25%] h-[30%] blur-xl"
         style={{
           background: "radial-gradient(ellipse 60% 30% at 45% 50%, rgba(72,187,120,0.28) 0%, transparent 60%)",
           animation: "auroraDrift1 4s ease-in-out infinite alternate-reverse",
