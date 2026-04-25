@@ -2,8 +2,6 @@ import { ArrowRight } from "lucide-react";
 import lodgeFrontImg from "../assets/lodge_front.avif";
 import { values, highlights } from "../data/about";
 import PageHero from "../components/ui/PageHero";
-import SectionHeader from "../components/ui/SectionHeader";
-import IconCard from "../components/ui/IconCard";
 import ParallaxForest from "../components/ParallaxForest";
 
 export default function About() {
