@@ -13,7 +13,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-1", src: "", altText: "Lodge Pine Candle" }],
     variants: [
-      { id: "var-1", title: "Default Title", price: { amount: "34.00", currencyCode: "USD" }, available: true },
+      { id: "var-1", title: "Default Title", price: { amount: "34.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
   {
@@ -26,7 +26,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-2", src: "", altText: "Mountain Creek Mug" }],
     variants: [
-      { id: "var-2", title: "Default Title", price: { amount: "28.00", currencyCode: "USD" }, available: true },
+      { id: "var-2", title: "Default Title", price: { amount: "28.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
   {
@@ -39,7 +39,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-3", src: "", altText: "Wilderness Wool Blanket" }],
     variants: [
-      { id: "var-3", title: "Default Title", price: { amount: "120.00", currencyCode: "USD" }, available: true },
+      { id: "var-3", title: "Default Title", price: { amount: "120.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
   {
@@ -52,7 +52,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-4", src: "", altText: "Trail Map Poster" }],
     variants: [
-      { id: "var-4", title: "Default Title", price: { amount: "45.00", currencyCode: "USD" }, available: true },
+      { id: "var-4", title: "Default Title", price: { amount: "45.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
   {
@@ -66,7 +66,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-5", src: "", altText: "River Stone Soap Set" }],
     variants: [
-      { id: "var-5", title: "Default Title", price: { amount: "24.00", currencyCode: "USD" }, available: true },
+      { id: "var-5", title: "Default Title", price: { amount: "24.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
   {
@@ -79,7 +79,7 @@ export const demoProducts: ShopifyProduct[] = [
     vendor: "Whispering Waters Lodge",
     images: [{ id: "img-6", src: "", altText: "Lodge Embroidered Cap" }],
     variants: [
-      { id: "var-6", title: "Default Title", price: { amount: "32.00", currencyCode: "USD" }, available: true },
+      { id: "var-6", title: "Default Title", price: { amount: "32.00", currencyCode: "USD" }, available: true, selectedOptions: [] },
     ],
   },
 ];

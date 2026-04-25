@@ -145,6 +145,7 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
             title: v.title,
             price: v.price,
             available: v.available,
+            selectedOptions: v.selectedOptions ?? [],
             image: v.image
               ? { id: v.image.id, src: v.image.src, altText: v.image.altText }
               : undefined,

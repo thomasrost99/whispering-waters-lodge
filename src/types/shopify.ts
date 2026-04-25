@@ -21,6 +21,7 @@ export interface ShopifyVariant {
   title: string;
   price: { amount: string; currencyCode: string };
   available: boolean;
+  selectedOptions: { name: string; value: string }[];
   image?: ShopifyImage;
 }
 
