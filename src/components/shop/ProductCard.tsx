@@ -82,71 +82,86 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-earth-100 flex flex-col">
       {/* Carousel */}
-      <div
-        className="aspect-square overflow-hidden bg-earth-50 relative select-none"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {carouselImages.length > 0 ? (
-          <>
-            {/* Sliding strip */}
-            <div
-              className="flex h-full transition-transform duration-300 ease-in-out"
-              style={{
-                width: `${carouselImages.length * 100}%`,
-                transform: `translateX(-${carouselIndex * (100 / carouselImages.length)}%)`,
-              }}
-            >
-              {carouselImages.map((img) => (
-                <div key={img.id} className="h-full flex-shrink-0" style={{ width: `${100 / carouselImages.length}%` }}>
-                  <img src={img.src} alt={img.altText || product.title} className="w-full h-full object-cover" />
-                </div>
-              ))}
+      <div className="select-none">
+        {/* Main image */}
+        <div
+          className="aspect-square overflow-hidden bg-earth-50 relative"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {carouselImages.length > 0 ? (
+            <>
+              {/* Sliding strip */}
+              <div
+                className="flex h-full transition-transform duration-300 ease-in-out"
+                style={{
+                  width: `${carouselImages.length * 100}%`,
+                  transform: `translateX(-${carouselIndex * (100 / carouselImages.length)}%)`,
+                }}
+              >
+                {carouselImages.map((img) => (
+                  <div key={img.id} className="h-full flex-shrink-0" style={{ width: `${100 / carouselImages.length}%` }}>
+                    <img src={img.src} alt={img.altText || product.title} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Arrows — full-height click zones with gradient backing */}
+              {carouselImages.length > 1 && (
+                <>
+                  <button
+                    onClick={prevSlide}
+                    aria-label="Previous image"
+                    className={`absolute left-0 top-0 h-full w-14 flex items-center justify-start pl-2 transition-opacity duration-200 ${carouselIndex === 0 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+                    style={{ background: "linear-gradient(to right, rgba(0,0,0,0.22), transparent)" }}
+                  >
+                    <span className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center">
+                      <svg className="w-4 h-4 text-lodge-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </span>
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    aria-label="Next image"
+                    className={`absolute right-0 top-0 h-full w-14 flex items-center justify-end pr-2 transition-opacity duration-200 ${carouselIndex === carouselImages.length - 1 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+                    style={{ background: "linear-gradient(to left, rgba(0,0,0,0.22), transparent)" }}
+                  >
+                    <span className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center">
+                      <svg className="w-4 h-4 text-lodge-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+                </>
+              )}
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-earth-300">
+              <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
+          )}
+        </div>
 
-            {/* Arrows — hidden on mobile (swipe instead), reveal on hover on desktop */}
-            {carouselImages.length > 1 && (
-              <>
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm items-center justify-center shadow transition-all hidden sm:flex sm:opacity-0 sm:group-hover:opacity-100 hover:bg-white"
-                  aria-label="Previous image"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm items-center justify-center shadow transition-all hidden sm:flex sm:opacity-0 sm:group-hover:opacity-100 hover:bg-white"
-                  aria-label="Next image"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-
-                {/* Dot indicators — always visible, tappable on mobile */}
-                <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5">
-                  {carouselImages.map((img, i) => (
-                    <button
-                      key={img.id}
-                      onClick={() => setCarouselIndex(i)}
-                      aria-label={`Go to image ${i + 1}`}
-                      className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
-                        i === carouselIndex ? "bg-white w-4" : "bg-white/60 w-1.5"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-earth-300">
-            <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+        {/* Thumbnail strip — always visible, shows you exactly what images exist */}
+        {carouselImages.length > 1 && (
+          <div className="flex gap-2 px-3 py-2.5 bg-earth-50 border-t border-earth-100">
+            {carouselImages.map((img, i) => (
+              <button
+                key={img.id}
+                onClick={() => setCarouselIndex(i)}
+                aria-label={`View image ${i + 1}`}
+                className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${
+                  i === carouselIndex
+                    ? "border-forest-600 opacity-100 shadow-sm"
+                    : "border-transparent opacity-50 hover:opacity-80"
+                }`}
+              >
+                <img src={img.src} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
           </div>
         )}
       </div>
