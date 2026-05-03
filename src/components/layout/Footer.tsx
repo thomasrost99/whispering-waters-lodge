@@ -54,12 +54,12 @@ export default function Footer() {
               <p>Bayfield County, Wisconsin</p>
               <p className="pt-2">
                 <a
-                  href="https://www.vrbo.com/9605561ha"
+                  href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-gold transition-colors"
                 >
-                  View on Vrbo →
+                  Book Now →
                 </a>
               </p>
               <p>

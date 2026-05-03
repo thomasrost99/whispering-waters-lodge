@@ -58,14 +58,14 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Mountains */}
         <div ref={setRef(0)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" className="block w-full h-[60vh] md:h-[45vh]">
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" className="block w-full h-[150vh] md:h-[45vh]">
             <path d="M0,400 L0,280 Q180,140 360,220 Q540,100 720,200 Q900,80 1080,180 Q1260,120 1440,240 L1440,400Z" fill="#11291a" />
           </svg>
         </div>
 
         {/* Back trees */}
         <div ref={setRef(1)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[75vh] md:h-[55vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[190vh] md:h-[55vh]">
             <g fill="#152e1d">{backTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#152e1d" />
           </svg>
@@ -78,7 +78,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Mid trees */}
         <div ref={setRef(3)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[88vh] md:h-[62vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[220vh] md:h-[62vh]">
             <g fill="#1c3b25">{midTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#1c3b25" />
           </svg>
@@ -86,7 +86,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
 
         {/* Front trees */}
         <div ref={setRef(4)} className="absolute inset-x-0 bottom-0 will-change-transform">
-          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[105vh] md:h-[72vh]">
+          <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[260vh] md:h-[72vh]">
             <g fill="#264d2f">{frontTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#264d2f" />
           </svg>
@@ -214,23 +214,26 @@ function Fireflies() {
 
 /* ─── Tree silhouette (tall conifer) ─── */
 
-function Tree({ x, h, w }: { x: number; h: number; w: number }) {
+function Tree({ x, h, w }: Readonly<{ x: number; h: number; w: number }>) {
   const base = 600;
   const trunkH = h * 0.1;
   const trunkW = w * 0.13;
   const tiers = 5;
+  const crownH = h * 0.9;
 
   return (
     <g>
       <rect x={x - trunkW / 2} y={base - trunkH} width={trunkW} height={trunkH} />
       {Array.from({ length: tiers }, (_, i) => {
-        const tierH = (h * 0.9) / tiers;
-        const tierW = w * (1 - i * 0.12);
+        const tierH = crownH / tiers;
+        const spread = 1 - i * 0.15; // top tiers narrower
+        const tierW = w * spread;
+        const overlap = tierH * 0.35; // tiers overlap each other more
         const y = base - trunkH - tierH * (i + 1);
         return (
           <polygon
-            key={i}
-            points={`${x},${y} ${x - tierW / 2},${y + tierH + 12} ${x + tierW / 2},${y + tierH + 12}`}
+            key={x * tiers + i}
+            points={`${x},${y} ${x - tierW / 2},${y + tierH + overlap} ${x + tierW / 2},${y + tierH + overlap}`}
           />
         );
       })}
@@ -241,25 +244,27 @@ function Tree({ x, h, w }: { x: number; h: number; w: number }) {
 /* ─── Tree data — dense forest ─── */
 
 const backTrees = [
-  { x: 40, h: 280, w: 50 }, { x: 110, h: 310, w: 55 }, { x: 200, h: 270, w: 48 },
-  { x: 290, h: 320, w: 56 }, { x: 380, h: 290, w: 52 }, { x: 470, h: 305, w: 54 },
-  { x: 560, h: 275, w: 49 }, { x: 650, h: 315, w: 57 }, { x: 740, h: 285, w: 51 },
-  { x: 830, h: 300, w: 53 }, { x: 920, h: 275, w: 48 }, { x: 1010, h: 310, w: 55 },
-  { x: 1100, h: 290, w: 52 }, { x: 1190, h: 305, w: 54 }, { x: 1280, h: 280, w: 50 },
-  { x: 1370, h: 295, w: 53 },
+  { x: 40, h: 220, w: 42 }, { x: 110, h: 330, w: 58 }, { x: 200, h: 260, w: 46 },
+  { x: 290, h: 350, w: 60 }, { x: 380, h: 240, w: 44 }, { x: 470, h: 310, w: 55 },
+  { x: 560, h: 370, w: 62 }, { x: 650, h: 250, w: 45 }, { x: 740, h: 340, w: 58 },
+  { x: 830, h: 230, w: 43 }, { x: 920, h: 360, w: 61 }, { x: 1010, h: 270, w: 48 },
+  { x: 1100, h: 320, w: 56 }, { x: 1190, h: 240, w: 44 }, { x: 1280, h: 345, w: 59 },
+  { x: 1370, h: 260, w: 47 },
 ];
 
 const midTrees = [
-  { x: 20, h: 360, w: 62 }, { x: 110, h: 390, w: 68 }, { x: 210, h: 350, w: 60 },
-  { x: 310, h: 400, w: 70 }, { x: 400, h: 370, w: 64 }, { x: 500, h: 395, w: 69 },
-  { x: 590, h: 355, w: 61 }, { x: 690, h: 405, w: 72 }, { x: 780, h: 365, w: 63 },
-  { x: 870, h: 385, w: 67 }, { x: 960, h: 350, w: 60 }, { x: 1060, h: 400, w: 70 },
-  { x: 1150, h: 375, w: 65 }, { x: 1250, h: 390, w: 68 }, { x: 1350, h: 360, w: 62 },
-  { x: 1430, h: 380, w: 66 },
+  { x: 20, h: 300, w: 55 }, { x: 110, h: 420, w: 72 }, { x: 210, h: 340, w: 60 },
+  { x: 310, h: 450, w: 76 }, { x: 400, h: 310, w: 56 }, { x: 500, h: 430, w: 74 },
+  { x: 590, h: 360, w: 62 }, { x: 690, h: 280, w: 52 }, { x: 780, h: 440, w: 75 },
+  { x: 870, h: 320, w: 58 }, { x: 960, h: 400, w: 70 }, { x: 1060, h: 290, w: 54 },
+  { x: 1150, h: 435, w: 74 }, { x: 1250, h: 330, w: 59 }, { x: 1350, h: 410, w: 71 },
+  { x: 1430, h: 300, w: 55 },
 ];
 
 const frontTrees = [
-  { x: 60, h: 480, w: 85 }, { x: 200, h: 520, w: 92 }, { x: 380, h: 470, w: 82 },
-  { x: 530, h: 530, w: 95 }, { x: 700, h: 490, w: 88 }, { x: 870, h: 525, w: 93 },
-  { x: 1030, h: 475, w: 84 }, { x: 1200, h: 510, w: 90 }, { x: 1370, h: 485, w: 86 },
+  { x: 60, h: 420, w: 78 }, { x: 130, h: 550, w: 96 }, { x: 200, h: 460, w: 84 },
+  { x: 380, h: 570, w: 98 }, { x: 460, h: 410, w: 76 }, { x: 530, h: 540, w: 94 },
+  { x: 700, h: 440, w: 80 }, { x: 870, h: 560, w: 97 }, { x: 940, h: 400, w: 75 },
+  { x: 1030, h: 530, w: 92 }, { x: 1200, h: 450, w: 82 }, { x: 1290, h: 555, w: 96 },
+  { x: 1370, h: 430, w: 79 },
 ];

@@ -26,7 +26,7 @@ export const values: Value[] = [
   {
     icon: Star,
     title: "Loved by Guests",
-    text: "Rated a perfect 10/10 on Vrbo with 20 reviews. Guests love the beauty, the cleanliness, and the peace and quiet.",
+    text: "Rated a perfect 10/10 with 20 reviews. Guests love the beauty, the cleanliness, and the peace and quiet.",
   },
 ];
 
@@ -53,8 +53,8 @@ export const highlights: HighlightItem[] = [
     text: "Explore the many trails that wind through over 100 acres of forest right on the property.",
   },
   {
-    title: "Near Delta Diner & Iron River",
-    text: "The famous Delta Diner is just down the road, with shops, wineries, and breweries nearby in Iron River.",
+    title: "Near Iron River",
+    text: "Shops, wineries, and breweries are just a short drive away in Iron River.",
   },
   {
     title: "Day-Trip Adventures",

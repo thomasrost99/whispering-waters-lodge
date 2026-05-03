@@ -55,9 +55,9 @@ function ContactSidebar() {
             </a>
           </ContactInfoItem>
 
-          <ContactInfoItem icon={ExternalLink} label="Book on Vrbo">
+          <ContactInfoItem icon={ExternalLink} label="Book on North Country Vacation Rentals">
             <a
-              href="https://www.vrbo.com/9605561ha"
+              href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-forest-600 transition-colors"
@@ -73,16 +73,16 @@ function ContactSidebar() {
           Ready to book?
         </h3>
         <p className="text-lodge-charcoal/60 text-sm mb-4">
-          All reservations are handled through Vrbo. Check availability, see more
+          All reservations are handled through North Country Vacation Rentals. Check availability, see more
           photos, and book your dates there.
         </p>
         <a
-          href="https://www.vrbo.com/9605561ha"
+          href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-forest-600 text-white text-sm font-medium rounded-xl hover:bg-forest-700 transition-all"
         >
-          Book on Vrbo
+          Book Now
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>

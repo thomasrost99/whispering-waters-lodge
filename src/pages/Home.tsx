@@ -25,7 +25,7 @@ function HeroSection() {
         <source src={waterfallVideo} type="video/webm" />
       </video>
 
-      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
@@ -37,14 +37,14 @@ function HeroSection() {
           <br />
           <span className="text-gold">Waters</span> Lodge
         </h1>
-        <p className="text-white/85 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md">
+        <p className="text-white/95 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md">
           A spacious log cabin nestled on over 100 acres of Wisconsin forest,
           with a waterfall, private lake, and trails right outside your door.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="https://www.vrbo.com/9605561ha"
+            href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold text-lodge-dark font-semibold rounded-xl hover:bg-gold-light active:scale-95 transition-all shadow-lg backdrop-blur-sm"
@@ -98,12 +98,12 @@ function CtaSection() {
           into the northwoods — Whispering Waters Lodge is ready for you.
         </p>
         <a
-          href="https://www.vrbo.com/9605561ha"
+          href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 bg-forest-600 text-white font-semibold rounded-xl hover:bg-forest-700 active:scale-95 transition-all shadow-lg"
         >
-          Check Availability on Vrbo
+          Check Availability
           <ArrowRight className="w-4 h-4" />
         </a>
       </div>

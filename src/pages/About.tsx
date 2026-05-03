@@ -138,15 +138,15 @@ function BookingCta() {
           Ready to Book Your Stay?
         </h2>
         <p className="text-earth-200 text-lg mb-8 max-w-2xl mx-auto">
-          Check availability, see more photos, and reserve your dates on Vrbo.
+          Check availability, see more photos, and reserve your dates on North Country Vacation Rentals.
         </p>
         <a
-          href="https://www.vrbo.com/9605561ha"
+          href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-lodge-dark font-semibold rounded-xl hover:bg-gold-light active:scale-95 transition-all shadow-lg"
         >
-          Book on Vrbo
+          Book Now
           <ArrowRight className="w-4 h-4" />
         </a>
       </div>
