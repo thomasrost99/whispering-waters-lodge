@@ -27,6 +27,23 @@ export default function ProductCard({ product }: ProductCardProps) {
     Object.fromEntries(optionNames.map((n) => [n, optionGroups[n][0]]))
   );
 
+  // Strip size guide tables and their titles from the description HTML
+  const cleanDescriptionHtml = useMemo(() => {
+    const doc = new DOMParser().parseFromString(product.descriptionHtml, "text/html");
+    doc.querySelectorAll(".size-guide-title").forEach((el) => el.closest("p")?.remove());
+    doc.querySelectorAll(".table-responsive").forEach((el) => el.remove());
+    return doc.body.innerHTML.replace(/(<br\s*\/?>\s*)+$/, "").trim();
+  }, [product.descriptionHtml]);
+
+  // Extract just the imperial size guide table (hide metric duplicate)
+  const sizeGuideHtml = useMemo(() => {
+    const doc = new DOMParser().parseFromString(product.descriptionHtml, "text/html");
+    const imperial = doc.querySelector('.table-responsive[data-unit-system="imperial"]');
+    return imperial?.outerHTML ?? null;
+  }, [product.descriptionHtml]);
+
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+
   const selectedVariant: ShopifyVariant | undefined = useMemo(() => {
     return product.variants.find((v) =>
       v.selectedOptions?.every((o) => selected[o.name] === o.value)
@@ -116,10 +133,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div
             className="text-sm text-lodge-charcoal/60 mt-1 overflow-hidden transition-[max-height] duration-300 ease-in-out"
             style={{ maxHeight: descExpanded ? "500px" : "4.5em" }}
-          >
-            {product.description}
-          </div>
-          {product.description?.length > 120 && (
+            dangerouslySetInnerHTML={{ __html: cleanDescriptionHtml }}
+          />
+          {cleanDescriptionHtml?.length > 120 && (
             <button
               onClick={() => setDescExpanded((e) => !e)}
               className="text-xs text-forest-600 hover:text-forest-800 mt-1 font-medium"
@@ -132,9 +148,25 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Option selectors — hide groups with only one value */}
         {optionNames.filter((name) => optionGroups[name].length > 1).map((name) => (
           <div key={name}>
-            <p className="text-xs font-medium text-lodge-charcoal/50 uppercase tracking-wider mb-1.5">
-              {name}
-            </p>
+            <div className="flex items-center justify-between mb-1.5">
+              <p className="text-xs font-medium text-lodge-charcoal/50 uppercase tracking-wider">
+                {name}
+              </p>
+              {name === "Size" && sizeGuideHtml && (
+                <button
+                  onClick={() => setSizeGuideOpen((o) => !o)}
+                  className="text-xs text-forest-600 hover:text-forest-800 font-medium"
+                >
+                  {sizeGuideOpen ? "Hide guide" : "Size guide"}
+                </button>
+              )}
+            </div>
+            {name === "Size" && sizeGuideHtml && sizeGuideOpen && (
+              <div
+                className="mb-2 text-xs text-lodge-charcoal/70 overflow-x-auto [&_table]:w-full [&_table]:border-collapse [&_td]:px-2 [&_td]:py-1 [&_td]:border [&_td]:border-earth-100 [&_strong]:font-semibold"
+                dangerouslySetInnerHTML={{ __html: sizeGuideHtml }}
+              />
+            )}
             <div className="flex flex-wrap gap-1.5">
               {optionGroups[name].map((value) => {
                 const isActive = selected[name] === value;
