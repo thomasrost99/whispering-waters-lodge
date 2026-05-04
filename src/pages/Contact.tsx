@@ -1,17 +1,12 @@
-import { useState, type FormEvent } from "react";
-import { MapPin, Mail, ExternalLink, Send, CheckCircle } from "lucide-react";
+import { MapPin, ExternalLink } from "lucide-react";
+import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import PageHero from "../components/ui/PageHero";
 import ContactInfoItem from "../components/ui/ContactInfoItem";
-import FormField from "../components/ui/FormField";
+
+// General area only — exact address provided upon booking
+const LODGE_COORDS: [number, number] = [46.498, -91.323];
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSubmitted(true);
-  }
-
   return (
     <div>
       <PageHero
@@ -25,11 +20,27 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
           <ContactSidebar />
           <div className="lg:col-span-3">
-            {submitted ? (
-              <SuccessMessage onReset={() => setSubmitted(false)} />
-            ) : (
-              <ContactForm onSubmit={handleSubmit} />
-            )}
+            <div className="rounded-2xl overflow-hidden border border-earth-100 shadow-sm" style={{ height: "480px" }}>
+              <MapContainer
+                center={LODGE_COORDS}
+                zoom={11}
+                scrollWheelZoom={false}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Circle
+                  center={LODGE_COORDS}
+                  radius={3000}
+                  pathOptions={{ color: "#2f613a", fillColor: "#2f613a", fillOpacity: 0.12, weight: 1.5 }}
+                />
+              </MapContainer>
+            </div>
+            <p className="text-xs text-lodge-charcoal/40 mt-2 text-center">
+              Approximate location shown · Exact address provided upon booking
+            </p>
           </div>
         </div>
       </section>
@@ -49,11 +60,13 @@ function ContactSidebar() {
             <p>Delta, WI · Near Iron River<br />Bayfield County, Wisconsin</p>
           </ContactInfoItem>
 
+          {/* Email — uncomment when address is ready
           <ContactInfoItem icon={Mail} label="Email">
             <a href="mailto:hello@whisperingwaterslodge.com" className="hover:text-forest-600 transition-colors">
               hello@whisperingwaterslodge.com
             </a>
           </ContactInfoItem>
+          */}
 
           <ContactInfoItem icon={ExternalLink} label="Book on North Country Vacation Rentals">
             <a
@@ -85,52 +98,6 @@ function ContactSidebar() {
           Book Now
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Contact Form ─── */
-
-function ContactForm({ onSubmit }: { onSubmit: (e: FormEvent<HTMLFormElement>) => void }) {
-  return (
-    <div className="bg-white rounded-2xl border border-earth-100 p-8 sm:p-10 shadow-sm">
-      <h2 className="font-heading text-2xl font-bold text-lodge-dark mb-6">Send a Message</h2>
-
-      <form onSubmit={onSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <FormField id="name" label="Name" placeholder="Your full name" required />
-          <FormField id="email" label="Email" type="email" placeholder="you@example.com" required />
-        </div>
-        <FormField id="subject" label="Subject" placeholder="What's this about?" required />
-        <FormField id="message" label="Message" placeholder="Tell us what's on your mind..." multiline required />
-
-        <button
-          type="submit"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-forest-600 text-white font-medium rounded-xl hover:bg-forest-700 active:scale-95 transition-all"
-        >
-          <Send className="w-4 h-4" />
-          Send Message
-        </button>
-      </form>
-    </div>
-  );
-}
-
-/* ─── Success State ─── */
-
-function SuccessMessage({ onReset }: { onReset: () => void }) {
-  return (
-    <div className="bg-white rounded-2xl border border-earth-100 p-8 sm:p-10 shadow-sm">
-      <div className="text-center py-12">
-        <CheckCircle className="w-16 h-16 text-forest-500 mx-auto mb-4" />
-        <h3 className="font-heading text-2xl font-bold text-lodge-dark mb-2">Message Sent!</h3>
-        <p className="text-lodge-charcoal/60 mb-6">
-          Thank you for reaching out. We'll get back to you within 24 hours.
-        </p>
-        <button onClick={onReset} className="text-sm text-forest-600 font-medium hover:underline">
-          Send another message
-        </button>
       </div>
     </div>
   );

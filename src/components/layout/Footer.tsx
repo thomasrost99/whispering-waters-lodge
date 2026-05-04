@@ -62,6 +62,7 @@ export default function Footer() {
                   Book Now →
                 </a>
               </p>
+              {/* Email — uncomment when address is ready
               <p>
                 <a
                   href="mailto:hello@whisperingwaterslodge.com"
@@ -70,6 +71,7 @@ export default function Footer() {
                   hello@whisperingwaterslodge.com
                 </a>
               </p>
+              */}
             </address>
           </div>
         </div>
