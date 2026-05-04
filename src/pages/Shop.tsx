@@ -1,4 +1,4 @@
-import { Store, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { useShopify } from "../context/ShopifyContext";
 import { demoProducts } from "../data/demoProducts";
 import PageHero from "../components/ui/PageHero";
@@ -12,9 +12,9 @@ export default function Shop() {
     <div>
       <PageHero
         gradient="earth"
-        icon={<Store className="w-8 h-8 text-gold-light" />}
-        title="The Lodge Shop"
-        subtitle="Handcrafted goods, local treasures, and a piece of the mountain life — delivered to your door."
+        eyebrow="Lodge Goods"
+        title={<>The Lodge <span className="text-gold">Shop</span></>}
+        subtitle="From the northwoods to your doorstep — cozy lodge gear for the whole crew."
       />
 
       {!configured && <DemoNotice />}

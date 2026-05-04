@@ -28,23 +28,48 @@
   --color-earth-800: #563d23;
   --color-earth-900: #42301c;
 
-  --color-water-50: #eff8fa;
-  --color-water-100: #d6eef4;
-  --color-water-200: #addde9;
-  --color-water-300: #7ac5d9;
-  --color-water-400: #4babc5;
-  --color-water-500: #2e8da8;
-  --color-water-600: #26728a;
-  --color-water-700: #235c70;
-  --color-water-800: #224c5c;
-  --color-water-900: #21404e;
+  --color-water-50: #f3f6f8;
+  --color-water-100: #dde5eb;
+  --color-water-200: #bdcdd8;
+  --color-water-300: #95afc0;
+  --color-water-400: #7093a6;
+  --color-water-500: #56798c;
+  --color-water-600: #466375;
+  --color-water-700: #3b5163;
+  --color-water-800: #344554;
+  --color-water-900: #2e3b47;
 
   --color-cream: #fdfbf7;
   --color-warm-white: #faf8f5;
   --color-lodge-dark: #1c1917;
   --color-lodge-charcoal: #292524;
-  --color-gold: #d4a43a;
-  --color-gold-light: #e8cc6a;
+
+  /* ─── Accent Options (uncomment one pair) ─── */
+
+  /* Original Gold */
+  /* --color-gold: #d4a43a;
+  --color-gold-light: #e8cc6a; */
+
+  /* Option A: Warm Copper */
+  /* --color-gold: #c27a4a;
+  --color-gold-light: #d99b6e; */
+
+  /* Option B: Soft Sage */
+  --color-gold: #a3b18a;
+  --color-gold-light: #c5d5a8;
+
+  /* Option C: Slate Blue */
+  /* --color-gold: #5d7b93;
+  --color-gold-light: #89a8bf; */
+
+  --color-danger-500: #ef4444;
+  --color-danger-700: #b91c1c;
+
+  /* Aurora borealis accent colors */
+  --color-aurora-green: rgba(72, 187, 120, 0.35);
+  --color-aurora-teal: rgba(56, 178, 172, 0.32);
+  --color-aurora-purple: rgba(139, 92, 246, 0.22);
+  --color-aurora-bright: rgba(72, 187, 120, 0.28);
 }
 
 /* ─── Base Styles ─── */

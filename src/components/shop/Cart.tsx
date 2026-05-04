@@ -139,7 +139,7 @@ export default function Cart() {
                             </button>
                             <button
                               onClick={() => removeFromCart(item.variant.id)}
-                              className="ml-auto text-xs text-red-500 hover:text-red-700 transition-colors"
+                              className="ml-auto text-xs text-danger-500 hover:text-danger-700 transition-colors"
                             >
                               Remove
                             </button>
@@ -174,7 +174,7 @@ export default function Cart() {
                   </button>
                   <button
                     onClick={clearCart}
-                    className="w-full py-2 text-sm text-lodge-charcoal/50 hover:text-red-500 transition-colors"
+                    className="w-full py-2 text-sm text-lodge-charcoal/50 hover:text-danger-500 transition-colors"
                   >
                     Clear Cart
                   </button>

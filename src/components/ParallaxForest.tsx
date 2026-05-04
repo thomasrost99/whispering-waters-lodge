@@ -151,7 +151,7 @@ function Aurora() {
       <div
         className="absolute -left-[25%] -right-[25%] top-[15%] h-[60%]"
         style={{
-          background: "radial-gradient(ellipse 80% 50% at 30% 40%, rgba(72,187,120,0.35) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 80% 50% at 30% 40%, var(--color-aurora-green) 0%, transparent 70%)",
           animation: "auroraDrift1 6s ease-in-out infinite alternate",
         }}
       />
@@ -159,7 +159,7 @@ function Aurora() {
       <div
         className="absolute -left-[25%] -right-[25%] top-[18%] h-[55%]"
         style={{
-          background: "radial-gradient(ellipse 70% 45% at 65% 35%, rgba(56,178,172,0.32) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 70% 45% at 65% 35%, var(--color-aurora-teal) 0%, transparent 70%)",
           animation: "auroraDrift2 5s ease-in-out infinite alternate",
         }}
       />
@@ -167,7 +167,7 @@ function Aurora() {
       <div
         className="absolute -left-[25%] -right-[25%] top-[12%] h-[50%]"
         style={{
-          background: "radial-gradient(ellipse 50% 40% at 50% 30%, rgba(139,92,246,0.22) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 50% 40% at 50% 30%, var(--color-aurora-purple) 0%, transparent 70%)",
           animation: "auroraDrift3 7s ease-in-out infinite alternate",
         }}
       />
@@ -175,7 +175,7 @@ function Aurora() {
       <div
         className="absolute -left-[25%] -right-[25%] top-[25%] h-[30%] blur-xl"
         style={{
-          background: "radial-gradient(ellipse 60% 30% at 45% 50%, rgba(72,187,120,0.28) 0%, transparent 60%)",
+          background: "radial-gradient(ellipse 60% 30% at 45% 50%, var(--color-aurora-bright) 0%, transparent 60%)",
           animation: "auroraDrift1 4s ease-in-out infinite alternate-reverse",
         }}
       />
