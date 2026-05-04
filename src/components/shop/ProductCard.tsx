@@ -139,10 +139,15 @@ export default function ProductCard({ product }: ProductCardProps) {
               {optionGroups[name].map((value) => {
                 const isActive = selected[name] === value;
                 // Check if this option combo would lead to an available variant
+                // Must match the rendered value AND all other currently-selected options
                 const wouldBeAvailable = product.variants.some(
                   (v) =>
                     v.available &&
-                    v.selectedOptions?.find((o) => o.name === name)?.value === value
+                    v.selectedOptions?.every((o) =>
+                      o.name === name
+                        ? o.value === value
+                        : selected[o.name] === o.value
+                    )
                 );
                 return (
                   <button
