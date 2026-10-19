@@ -1,4 +1,5 @@
-import { ShoppingBag } from "lucide-react";
+import { Info, ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useShopify } from "../context/ShopifyContext";
 import { demoProducts } from "../data/demoProducts";
 import PageHero from "../components/ui/PageHero";
@@ -21,6 +22,7 @@ export default function Shop() {
 
       <section className="py-12 sm:py-16 px-4">
         <div className="max-w-7xl mx-auto">
+          <ReturnsNotice />
           {loading ? <ProductGridSkeleton /> : <ProductGrid products={displayProducts} />}
         </div>
       </section>
@@ -44,6 +46,24 @@ function DemoNotice() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ─── Returns Notice ─── */
+
+function ReturnsNotice() {
+  return (
+    <p className="max-w-2xl mx-auto mb-8 flex items-start justify-center gap-2 text-center text-sm text-earth-600">
+      <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+      <span>
+        Every item is printed on demand just for you, so we can't accept returns or exchanges. If something
+        arrives damaged or misprinted,{" "}
+        <Link to="/contact" className="underline underline-offset-2 hover:text-earth-800">
+          contact us
+        </Link>{" "}
+        and we'll make it right.
+      </span>
+    </p>
   );
 }
 
