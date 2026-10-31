@@ -1,5 +1,4 @@
 import { Info, ShoppingBag } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useShopify } from "../context/useShopify";
 import { demoProducts } from "../data/demoProducts";
 import PageHero from "../components/ui/PageHero";
@@ -57,11 +56,7 @@ function ReturnsNotice() {
       <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
       <span>
         Every item is printed on demand just for you, so we can't accept returns or exchanges. If something
-        arrives damaged or misprinted,{" "}
-        <Link to="/contact" className="underline underline-offset-2 hover:text-earth-800">
-          contact us
-        </Link>{" "}
-        and we'll make it right.
+        arrives damaged or misprinted, reply to your order confirmation email and we'll make it right.
       </span>
     </p>
   );

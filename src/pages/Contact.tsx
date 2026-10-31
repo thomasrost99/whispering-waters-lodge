@@ -1,4 +1,4 @@
-import { MapPin, ExternalLink } from "lucide-react";
+import { MapPin, ExternalLink, Phone, ShoppingBag } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import PageHero from "../components/ui/PageHero";
@@ -14,7 +14,7 @@ export default function Contact() {
         gradient="water"
         eyebrow="Get in Touch"
         title={<>We'd Love to <span className="text-gold-light">Hear from You</span></>}
-        subtitle="Have a question about the property, your upcoming stay, or anything else? Reach out and we'll get back to you."
+        subtitle="Questions about the property or your stay go to North Country Vacation Rentals, who handle all reservations."
       />
 
       <section className="py-16 sm:py-24 px-4">
@@ -68,6 +68,20 @@ function ContactSidebar() {
             </a>
           </ContactInfoItem>
           */}
+
+          <ContactInfoItem icon={Phone} label="Questions About Your Stay">
+            <p>
+              North Country Vacation Rentals:{" "}
+              <a href="tel:7157982252" className="hover:text-forest-600 transition-colors">
+                715-798-2252
+              </a>
+              , or send a message from the listing below.
+            </p>
+          </ContactInfoItem>
+
+          <ContactInfoItem icon={ShoppingBag} label="Shop Orders">
+            <p>Reply to your order confirmation email.</p>
+          </ContactInfoItem>
 
           <ContactInfoItem icon={ExternalLink} label="Book on North Country Vacation Rentals">
             <a
