@@ -64,12 +64,6 @@
 
   --color-danger-500: #ef4444;
   --color-danger-700: #b91c1c;
-
-  /* Aurora borealis accent colors */
-  --color-aurora-green: rgba(72, 187, 120, 0.35);
-  --color-aurora-teal: rgba(56, 178, 172, 0.32);
-  --color-aurora-purple: rgba(139, 92, 246, 0.22);
-  --color-aurora-bright: rgba(72, 187, 120, 0.28);
 }
 
 /* ─── Base Styles ─── */
@@ -84,27 +78,182 @@
   }
 }
 
-/* ─── Parallax Forest Animations ─── */
+/* ─── Night Scene (ParallaxForest) ─── */
+.night-stage {
+  height: 100vh;
+  height: 100lvh;
+  margin-bottom: -100vh;
+  margin-bottom: -100lvh;
+}
+
+.night-sky {
+  background: linear-gradient(180deg, #01040c 0%, #030b1a 34%, #07202e 62%, #0d3a40 78%, #0d3a40 100%);
+}
+
+.night-vignette {
+  background:
+    radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 4, 8, 0.6) 100%);
+}
+
+.aurora-band {
+  position: absolute;
+  inset: 0 -40%;
+  will-change: transform, opacity;
+}
+
+.aurora-green {
+  background: radial-gradient(ellipse 58% 42% at 32% 42%, rgba(70, 245, 160, 0.62) 0%, rgba(70, 245, 160, 0.16) 48%, transparent 72%);
+  animation: auroraDrift1 11s ease-in-out infinite alternate;
+}
+
+.aurora-teal {
+  background: radial-gradient(ellipse 52% 36% at 66% 36%, rgba(50, 215, 225, 0.5) 0%, transparent 70%);
+  animation: auroraDrift2 9s ease-in-out infinite alternate;
+}
+
+.aurora-violet {
+  background: radial-gradient(ellipse 44% 30% at 50% 20%, rgba(160, 100, 255, 0.42) 0%, transparent 70%);
+  animation: auroraDrift3 13s ease-in-out infinite alternate;
+}
+
+.aurora-rays {
+  position: absolute;
+  inset: 0 -30%;
+  background: repeating-linear-gradient(92deg, transparent 0 17px, rgba(150, 255, 205, 0.16) 21px, transparent 30px, transparent 47px, rgba(120, 245, 225, 0.11) 53px, transparent 61px);
+  -webkit-mask-image: radial-gradient(ellipse 62% 48% at 50% 36%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 62% 48% at 50% 36%, #000 15%, transparent 72%);
+  will-change: transform;
+  animation: auroraRays 12s ease-in-out infinite alternate;
+}
+
+.aurora-rays-slow {
+  animation-duration: 19s;
+  animation-direction: alternate-reverse;
+  opacity: 0.7;
+}
+
+.twinkle {
+  will-change: opacity;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+.twinkle-2 {
+  animation-duration: 5.5s;
+  animation-direction: alternate-reverse;
+}
+
+.shooting-star {
+  position: absolute;
+  width: 190px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: rotate(-24deg);
+  animation: shootingStar 13s linear infinite;
+}
+
+.shooting-star-late {
+  animation-duration: 19s;
+  animation-delay: 7s;
+}
+
+.mist-band {
+  position: absolute;
+  inset-inline: -30%;
+  height: 22%;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(200, 228, 235, 0.3) 0%, transparent 72%);
+  will-change: transform;
+  animation: mistDrift 21s ease-in-out infinite alternate;
+}
+
+.mist-band-slow {
+  animation-duration: 31s;
+  animation-direction: alternate-reverse;
+}
+
+.smoke {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: smokeRise 8s ease-out infinite;
+}
+
+.smoke-2 { animation-delay: -2.7s; }
+.smoke-3 { animation-delay: -5.3s; }
+
+.firefly {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff3a3;
+  box-shadow: 0 0 10px 4px rgba(255, 224, 110, 0.65);
+  will-change: transform, opacity;
+  animation: fireflyWander 9s ease-in-out infinite;
+}
+
+/* Off screen, it rests. */
+.night-scene:not([data-live]) .night-stage * {
+  animation-play-state: paused;
+}
+
 @keyframes mistDrift {
-  0% { transform: translateX(-8%) scaleX(1.1); opacity: 0.3; }
-  50% { opacity: 0.5; }
-  100% { transform: translateX(8%) scaleX(1.2); opacity: 0.3; }
+  from { transform: translateX(-14%); }
+  to { transform: translateX(14%); }
 }
 
 @keyframes auroraDrift1 {
-  0%   { transform: translateX(-20%) scaleX(0.9); opacity: 0.6; }
-  50%  { opacity: 1; }
-  100% { transform: translateX(20%) scaleX(1.25); opacity: 0.5; }
+  from { transform: translateX(-13%) scaleX(0.92); opacity: 0.6; }
+  to { transform: translateX(13%) scaleX(1.18); opacity: 1; }
 }
 
 @keyframes auroraDrift2 {
-  0%   { transform: translateX(18%) scaleY(0.8); opacity: 0.5; }
-  50%  { opacity: 1; }
-  100% { transform: translateX(-18%) scaleY(1.2); opacity: 0.6; }
+  from { transform: translateX(12%) scaleY(0.85); opacity: 0.55; }
+  to { transform: translateX(-12%) scaleY(1.2); opacity: 1; }
 }
 
 @keyframes auroraDrift3 {
-  0%   { transform: translateX(15%) scale(0.9); opacity: 0.4; }
-  50%  { opacity: 1; }
-  100% { transform: translateX(-15%) scale(1.2); opacity: 0.6; }
+  from { transform: translateX(10%) scale(0.92); opacity: 0.45; }
+  to { transform: translateX(-10%) scale(1.15); opacity: 0.95; }
+}
+
+@keyframes auroraRays {
+  from { transform: translateX(-7%) scaleY(0.92); }
+  to { transform: translateX(7%) scaleY(1.08); }
+}
+
+@keyframes twinkle {
+  from { opacity: 1; }
+  to { opacity: 0.4; }
+}
+
+@keyframes shootingStar {
+  0%, 91% { opacity: 0; transform: rotate(-24deg) translateX(0) scaleX(0.3); }
+  93% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-24deg) translateX(-620px) scaleX(1); }
+}
+
+@keyframes smokeRise {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  15% { opacity: 0.42; }
+  100% { opacity: 0; transform: translate(40px, -130px) scale(3); }
+}
+
+@keyframes fireflyWander {
+  0%, 100% { transform: translate(0, 0); opacity: 0.1; }
+  25% { transform: translate(26px, -22px); opacity: 1; }
+  50% { transform: translate(-14px, -46px); opacity: 0.25; }
+  75% { transform: translate(-34px, -12px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .night-stage * {
+    animation: none !important;
+  }
+
+  .shooting-star {
+    display: none;
+  }
 }

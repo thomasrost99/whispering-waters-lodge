@@ -15,8 +15,11 @@ export default function About() {
       />
       <StorySection />
       <ParallaxForest>
+        <Interlude low eyebrow="After Dark" title="Far from the City Lights" text="Stars, quiet, and over 100 acres of Wisconsin forest." />
         <ValuesSection />
+        <Interlude eyebrow="Into the Trees" title="Trails Right Outside Your Door" text="A creek, a waterfall, and a forest to wander through." />
         <HighlightsSection />
+        <Interlude arrive eyebrow="The Lodge" title="Your Own Private Lake" text="A short walk from the cabin, with a canoe waiting." />
       </ParallaxForest>
       <BookingCta />
     </div>
@@ -74,6 +77,21 @@ function StorySection() {
   );
 }
 
+/* ─── Scenic Breaks in the Night Scene ─── */
+
+function Interlude({ eyebrow, title, text, low = false, arrive = false }: Readonly<{ eyebrow: string; title: string; text: string; low?: boolean; arrive?: boolean }>) {
+  const place = arrive ? "min-h-[125vh] pt-[14vh] items-start" : low ? "min-h-[95vh] pt-[48vh] items-start" : "min-h-[85vh] items-center";
+  return (
+    <section className={`px-6 flex justify-center text-center ${place}`}>
+      <div className="[text-shadow:0_2px_18px_rgba(0,0,0,0.85)]">
+        <p className="text-gold-light tracking-[0.25em] uppercase text-xs sm:text-sm font-medium mb-3">{eyebrow}</p>
+        <h2 className="font-heading text-4xl sm:text-6xl font-bold text-cream mb-4">{title}</h2>
+        <p className="text-cream/85 text-base sm:text-xl max-w-xl mx-auto">{text}</p>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Values Grid ─── */
 
 function ValuesSection() {
@@ -89,7 +107,7 @@ function ValuesSection() {
           {values.map((v) => {
             const Icon = v.icon;
             return (
-              <div key={v.title} className="bg-black/35 backdrop-blur-md p-8 rounded-2xl border border-white/10 text-center">
+              <div key={v.title} className="bg-black/60 md:bg-black/40 md:backdrop-blur-md p-8 rounded-2xl border border-white/10 text-center">
                 <div className="w-14 h-14 rounded-xl bg-gold/20 text-gold flex items-center justify-center mb-5 mx-auto">
                   <Icon className="w-7 h-7" />
                 </div>
@@ -117,7 +135,7 @@ function HighlightsSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {highlights.map((h) => (
-            <div key={h.title} className="bg-black/35 backdrop-blur-md p-6 rounded-2xl border border-white/10">
+            <div key={h.title} className="bg-black/60 md:bg-black/40 md:backdrop-blur-md p-6 rounded-2xl border border-white/10">
               <h3 className="font-heading text-lg font-semibold text-cream mb-2">{h.title}</h3>
               <p className="text-earth-200/70 text-sm leading-relaxed">{h.text}</p>
             </div>
