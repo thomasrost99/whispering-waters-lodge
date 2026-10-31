@@ -39,7 +39,7 @@ function HeroSection() {
         </h1>
         <p className="text-white/95 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md">
           A spacious log cabin nestled on over 100 acres of Wisconsin forest,
-          with a waterfall, private lake, and trails right outside your door.
+          with a waterfall and trails right outside your door and a private lake a short walk away.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
