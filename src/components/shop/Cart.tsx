@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
-import { useShopify } from "../../context/ShopifyContext";
+import { useShopify } from "../../context/useShopify";
 
 export default function Cart() {
   const {

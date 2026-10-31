@@ -1,4 +1,5 @@
 import { MapPin, ExternalLink } from "lucide-react";
+import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Circle } from "react-leaflet";
 import PageHero from "../components/ui/PageHero";
 import ContactInfoItem from "../components/ui/ContactInfoItem";

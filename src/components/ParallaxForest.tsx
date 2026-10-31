@@ -6,7 +6,6 @@ import { useEffect, useRef, type ReactNode } from "react";
  */
 export default function ParallaxForest({ children }: { children: ReactNode }) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const layersRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     let ticking = false;
@@ -25,8 +24,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
         const viewH = window.innerHeight;
         const offset = -(rect.top / viewH);
 
-        layersRef.current.forEach((layer, i) => {
-          if (!layer) return;
+        section.querySelectorAll<HTMLDivElement>("[data-parallax]").forEach((layer, i) => {
           const y = offset * speeds[i] * viewH;
           layer.style.transform = `translate3d(0, ${y}px, 0)`;
         });
@@ -38,8 +36,6 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const setRef = (i: number) => (el: HTMLDivElement | null) => { layersRef.current[i] = el; };
 
   return (
     <div ref={sectionRef} className="relative overflow-hidden bg-forest-900">
@@ -57,14 +53,14 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
         <Fireflies />
 
         {/* Mountains */}
-        <div ref={setRef(0)} className="absolute inset-x-0 bottom-0 will-change-transform">
+        <div data-parallax className="absolute inset-x-0 bottom-0 will-change-transform">
           <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" className="block w-full h-[150vh] md:h-[45vh]">
             <path d="M0,400 L0,280 Q180,140 360,220 Q540,100 720,200 Q900,80 1080,180 Q1260,120 1440,240 L1440,400Z" fill="#11291a" />
           </svg>
         </div>
 
         {/* Back trees */}
-        <div ref={setRef(1)} className="absolute inset-x-0 bottom-0 will-change-transform">
+        <div data-parallax className="absolute inset-x-0 bottom-0 will-change-transform">
           <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[190vh] md:h-[55vh]">
             <g fill="#152e1d">{backTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#152e1d" />
@@ -72,12 +68,12 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
         </div>
 
         {/* Mist */}
-        <div ref={setRef(2)} className="absolute inset-x-0 bottom-[30%] h-40 will-change-transform">
+        <div data-parallax className="absolute inset-x-0 bottom-[30%] h-40 will-change-transform">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent blur-3xl" style={{ animation: "mistDrift 10s ease-in-out infinite alternate" }} />
         </div>
 
         {/* Mid trees */}
-        <div ref={setRef(3)} className="absolute inset-x-0 bottom-0 will-change-transform">
+        <div data-parallax className="absolute inset-x-0 bottom-0 will-change-transform">
           <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[220vh] md:h-[62vh]">
             <g fill="#1c3b25">{midTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#1c3b25" />
@@ -85,7 +81,7 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
         </div>
 
         {/* Front trees */}
-        <div ref={setRef(4)} className="absolute inset-x-0 bottom-0 will-change-transform">
+        <div data-parallax className="absolute inset-x-0 bottom-0 will-change-transform">
           <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" className="block w-full h-[260vh] md:h-[72vh]">
             <g fill="#264d2f">{frontTrees.map((t, i) => <Tree key={i} {...t} />)}</g>
             <rect x="0" y="560" width="1440" height="40" fill="#264d2f" />

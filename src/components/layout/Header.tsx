@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ShoppingBag } from "lucide-react";
-import { useShopify } from "../../context/ShopifyContext";
+import { useShopify } from "../../context/useShopify";
 import lodgeIcon from "../../assets/lodge_icon.png";
 
 const navLinks = [

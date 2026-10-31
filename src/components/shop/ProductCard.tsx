@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import type { ShopifyProduct, ShopifyVariant } from "../../types/shopify";
-import { useShopify } from "../../context/ShopifyContext";
+import { useShopify } from "../../context/useShopify";
 
 interface ProductCardProps {
   product: ShopifyProduct;

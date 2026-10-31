@@ -5,25 +5,45 @@ declare module "shopify-buy" {
     apiVersion?: string;
   }
 
+  interface Image {
+    id: string;
+    src: string;
+    altText: string | null;
+  }
+
+  interface Variant {
+    id: string;
+    title: string;
+    price: { amount: string; currencyCode: string };
+    available: boolean;
+    selectedOptions?: { name: string; value: string }[];
+    image?: Image | null;
+  }
+
+  interface Product {
+    id: string;
+    title: string;
+    description: string;
+    descriptionHtml: string;
+    handle: string;
+    productType: string;
+    vendor: string;
+    images: Image[];
+    variants: Variant[];
+  }
+
+  interface Checkout {
+    id: string;
+    webUrl: string;
+  }
+
   interface Client {
     product: {
-      fetchAll: (pageSize?: number) => Promise<any[]>;
-      fetch: (id: string) => Promise<any>;
-      fetchByHandle: (handle: string) => Promise<any>;
-      fetchQuery: (query: { query?: string; sortKey?: string; reverse?: boolean; first?: number }) => Promise<any[]>;
+      fetchAll: (pageSize?: number) => Promise<Product[]>;
     };
     checkout: {
-      create: () => Promise<any>;
-      fetch: (id: string) => Promise<any>;
-      addLineItems: (checkoutId: string, lineItems: Array<{ variantId: string; quantity: number }>) => Promise<any>;
-      removeLineItems: (checkoutId: string, lineItemIds: string[]) => Promise<any>;
-      updateLineItems: (checkoutId: string, lineItems: Array<{ id: string; quantity: number }>) => Promise<any>;
-    };
-    collection: {
-      fetchAll: (pageSize?: number) => Promise<any[]>;
-      fetchAllWithProducts: () => Promise<any[]>;
-      fetchByHandle: (handle: string) => Promise<any>;
-      fetchWithProducts: (id: string) => Promise<any>;
+      create: () => Promise<Checkout>;
+      addLineItems: (checkoutId: string, lineItems: Array<{ variantId: string; quantity: number }>) => Promise<Checkout>;
     };
   }
 

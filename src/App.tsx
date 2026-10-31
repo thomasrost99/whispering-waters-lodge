@@ -1,11 +1,13 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ShopifyProvider } from "./context/ShopifyContext";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Shop from "./pages/Shop";
-import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+
+const About = lazy(() => import("./pages/About"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Contact = lazy(() => import("./pages/Contact"));
 
 export default function App() {
   return (
@@ -13,9 +15,9 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="shop" element={<Shop />} />
-          <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<Suspense><About /></Suspense>} />
+          <Route path="shop" element={<Suspense><Shop /></Suspense>} />
+          <Route path="contact" element={<Suspense><Contact /></Suspense>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -1,6 +1,6 @@
 import { Info, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useShopify } from "../context/ShopifyContext";
+import { useShopify } from "../context/useShopify";
 import { demoProducts } from "../data/demoProducts";
 import PageHero from "../components/ui/PageHero";
 import ProductCard from "../components/shop/ProductCard";

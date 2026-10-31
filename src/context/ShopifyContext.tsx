@@ -1,6 +1,4 @@
 import {
-  createContext,
-  useContext,
   useReducer,
   useEffect,
   useCallback,
@@ -8,17 +6,9 @@ import {
 } from "react";
 import { getShopifyClient, isShopifyConfigured } from "../lib/shopify";
 import type { ShopifyProduct, CartItem } from "../types/shopify";
+import { ShopifyContext, type ShopifyState } from "./useShopify";
 
 /* ─── State ─── */
-
-interface ShopifyState {
-  products: ShopifyProduct[];
-  cart: CartItem[];
-  cartOpen: boolean;
-  checkoutUrl: string;
-  loading: boolean;
-  configured: boolean;
-}
 
 const initialState: ShopifyState = {
   products: [],
@@ -28,6 +18,15 @@ const initialState: ShopifyState = {
   loading: false,
   configured: isShopifyConfigured(),
 };
+
+function loadCart(state: ShopifyState): ShopifyState {
+  try {
+    const items: CartItem[] = JSON.parse(localStorage.getItem("wwl-cart") ?? "[]");
+    return { ...state, cart: items };
+  } catch {
+    return state; // ignore corrupt data
+  }
+}
 
 /* ─── Actions ─── */
 
@@ -97,26 +96,10 @@ function reducer(state: ShopifyState, action: Action): ShopifyState {
   }
 }
 
-/* ─── Context ─── */
-
-interface ShopifyContextValue extends ShopifyState {
-  fetchProducts: () => Promise<void>;
-  addToCart: (product: ShopifyProduct, variantIndex?: number, quantity?: number) => void;
-  removeFromCart: (variantId: string) => void;
-  updateQuantity: (variantId: string, quantity: number) => void;
-  clearCart: () => void;
-  toggleCart: (open?: boolean) => void;
-  checkout: () => Promise<void>;
-  cartCount: number;
-  cartTotal: string;
-}
-
-const ShopifyContext = createContext<ShopifyContextValue | null>(null);
-
 /* ─── Provider ─── */
 
 export function ShopifyProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState, loadCart);
 
   const fetchProducts = useCallback(async () => {
     const client = getShopifyClient();
@@ -127,7 +110,7 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
       const products = await client.product.fetchAll();
       dispatch({
         type: "SET_PRODUCTS",
-        products: products.map((p: any) => ({
+        products: products.map((p) => ({
           id: p.id,
           title: p.title,
           description: p.description,
@@ -135,12 +118,12 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
           handle: p.handle,
           productType: p.productType,
           vendor: p.vendor,
-          images: p.images.map((img: any) => ({
+          images: p.images.map((img) => ({
             id: img.id,
             src: img.src,
             altText: img.altText,
           })),
-          variants: p.variants.map((v: any) => ({
+          variants: p.variants.map((v) => ({
             id: v.id,
             title: v.title,
             price: v.price,
@@ -209,9 +192,9 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
       );
       dispatch({
         type: "SET_CHECKOUT_URL",
-        url: (updatedCheckout as any).webUrl,
+        url: updatedCheckout.webUrl,
       });
-      window.open((updatedCheckout as any).webUrl, "_blank");
+      window.location.assign(updatedCheckout.webUrl);
     } catch (err) {
       console.error("Checkout failed:", err);
     }
@@ -228,19 +211,6 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem("wwl-cart", JSON.stringify(state.cart));
   }, [state.cart]);
-
-  // Restore cart from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("wwl-cart");
-    if (saved) {
-      try {
-        const items: CartItem[] = JSON.parse(saved);
-        items.forEach((item) => dispatch({ type: "ADD_TO_CART", item }));
-      } catch {
-        // ignore corrupt data
-      }
-    }
-  }, []);
 
   const cartCount = state.cart.reduce((sum, i) => sum + i.quantity, 0);
   const cartTotal = state.cart
@@ -268,10 +238,4 @@ export function ShopifyProvider({ children }: { children: ReactNode }) {
       {children}
     </ShopifyContext.Provider>
   );
-}
-
-export function useShopify(): ShopifyContextValue {
-  const ctx = useContext(ShopifyContext);
-  if (!ctx) throw new Error("useShopify must be used within ShopifyProvider");
-  return ctx;
 }
