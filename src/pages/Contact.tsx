@@ -14,7 +14,7 @@ export default function Contact() {
         gradient="water"
         eyebrow="Get in Touch"
         title={<>We'd Love to <span className="text-gold-light">Hear from You</span></>}
-        subtitle="Questions about the property or your stay go to North Country Vacation Rentals, who handle all reservations."
+        subtitle="North Country Vacation Rentals handles questions about the property, your stay, and all reservations."
       />
 
       <section className="py-16 sm:py-24 px-4">
@@ -69,13 +69,21 @@ function ContactSidebar() {
           </ContactInfoItem>
           */}
 
-          <ContactInfoItem icon={Phone} label="Questions About Your Stay">
+          <ContactInfoItem icon={Phone} label="Questions About the Property or Your Stay">
             <p>
-              North Country Vacation Rentals:{" "}
+              <a
+                href="https://www.northcountryvacationrentals.net/Whispering-Waters-Lodge/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-forest-600 transition-colors"
+              >
+                Open our listing
+              </a>{" "}
+              and select the “Questions?” button, or call North Country at{" "}
               <a href="tel:7157982252" className="hover:text-forest-600 transition-colors">
                 715-798-2252
               </a>
-              , or send a message from the listing below.
+              .
             </p>
           </ContactInfoItem>
 
