@@ -3,7 +3,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 /**
  * A night descent behind the page: the scene stays pinned while the content scrolls
  * over it, and the scroll drives a camera from the stars, down through the forest,
- * to the lodge on the lake. Everything moves by transform and opacity only, so it
+ * to the cabin on the creek. Everything moves by transform and opacity only, so it
  * holds up on phones; the art is drawn once and never repainted.
  */
 
@@ -27,7 +27,7 @@ const MOTION: Record<string, Motion> = {
   backTrees: { y: [72, 0], pointer: 0.9 },
   midTrees: { y: [88, 0], pointer: 1.2 },
   lodge: { y: [96, 0], pointer: 1.3 },
-  lake: { y: [112, 0], pointer: 1.6 },
+  creek: { y: [112, 0], pointer: 1.6 },
   fireflies: { y: [20, 0], opacity: [0, 1], at: [0.6, 0.92], pointer: 2 },
   passingTrees: { y: [120, -190], scale: [1, 1.35], at: [0.1, 0.8], pointer: 3 },
   boughs: { y: [-105, 0], at: [0.66, 1], pointer: 3.5 },
@@ -143,9 +143,9 @@ export default function ParallaxForest({ children }: { children: ReactNode }) {
         <Art layer="backTrees"><path d={backTrees} fill="#0d2a2a" /></Art>
         <Art layer="midTrees"><path d={midTrees} fill="#08201c" /></Art>
         <Art layer="lodge"><Lodge /></Art>
-        <Art layer="lake"><Lake /></Art>
+        <Art layer="creek"><Creek /></Art>
         <div data-layer="fireflies" className="absolute inset-0 will-change-transform"><Fireflies /></div>
-        <Art layer="passingTrees" anchor="xMidYMid"><path d={passingTrees} fill="#020b09" /></Art>
+        <Art layer="passingTrees" anchor="xMidYMid"><path d={passingTrees} fill="url(#passing)" /></Art>
         <div data-layer="boughs" className="absolute inset-0 will-change-transform"><Boughs /></div>
         <div className="absolute inset-0 night-vignette" />
         <Defs />
@@ -197,7 +197,7 @@ function conifer(rnd: () => number, x: number, base: number, h: number, w: numbe
 
 function forest(seed: number, base: number, min: number, max: number, gap: number, clearing?: [number, number]) {
   const rnd = seeded(seed);
-  let d = `M-60 ${base}L1660 ${base}L1660 1000L-60 1000Z`;
+  let d = base < 1000 ? `M-60 ${base}L1660 ${base}L1660 1000L-60 1000Z` : "";
   for (let x = -40; x < 1640; x += gap * (0.6 + rnd() * 0.8)) {
     const inside = clearing && x > clearing[0] && x < clearing[1];
     if (inside && min > 300) continue; // the camera's path through the big trees
@@ -317,7 +317,7 @@ function Mist() {
   );
 }
 
-/* ─── The lodge, the falls and the lake ─── */
+/* ─── The cabin, the falls and the creek ─── */
 
 function Lodge() {
   return (
@@ -363,43 +363,41 @@ function Lodge() {
   );
 }
 
-function Lake() {
+function Creek() {
   return (
     <>
-      <path d="M-60 740Q400 730 800 738T1660 734V1000H-60Z" fill="url(#water)" />
+      {/* Forest floor */}
+      <path d="M-60 742Q400 734 800 742T1660 738V1000H-60Z" fill="url(#ground)" />
 
-      {/* The forest in the water */}
-      <g clipPath="url(#lakeOnly)">
-        <path d={backTrees} fill="#03141a" opacity="0.5" transform="translate(0 1478) scale(1 -1)" />
-        <path d={midTrees} fill="#020f13" opacity="0.65" transform="translate(0 1484) scale(1 -1)" />
-      </g>
+      {/* The creek, from the falls past the cabin and out of the frame */}
+      <path d="M574 746C530 786 668 806 650 846C632 892 742 912 716 1010H960C944 930 790 896 800 846C812 800 690 782 650 746Z" fill="url(#water)" />
+      <path d="M574 746C530 786 668 806 650 846C632 892 742 912 716 1010" stroke="#0a1a18" strokeWidth="9" fill="none" />
+      <path d="M650 746C690 782 812 800 800 846C790 896 944 930 960 1010" stroke="#0a1a18" strokeWidth="9" fill="none" />
 
-      {/* The moon and the cabin in the water */}
-      <g fill="#f6f1dc" className="twinkle twinkle-1">
-        <rect x="878" y="760" width="58" height="3" rx="1.5" opacity="0.65" />
-        <rect x="858" y="794" width="96" height="4" rx="2" opacity="0.5" />
-        <rect x="844" y="842" width="126" height="4" rx="2" opacity="0.4" />
-        <rect x="826" y="902" width="164" height="5" rx="2.5" opacity="0.28" />
+      {/* Moonlight and window light on the water */}
+      <g fill="#f6f1dc" className="twinkle">
+        <rect x="612" y="772" width="54" height="3" rx="1.5" opacity="0.55" />
+        <rect x="692" y="842" width="82" height="3" rx="1.5" opacity="0.5" />
+        <rect x="742" y="912" width="110" height="4" rx="2" opacity="0.42" />
+        <rect x="776" y="972" width="130" height="4" rx="2" opacity="0.3" />
       </g>
       <g fill="#f6f1dc" className="twinkle twinkle-2">
-        <rect x="866" y="776" width="84" height="3" rx="1.5" opacity="0.55" />
-        <rect x="850" y="816" width="118" height="4" rx="2" opacity="0.45" />
-        <rect x="836" y="870" width="146" height="4" rx="2" opacity="0.32" />
-        <rect x="818" y="936" width="186" height="5" rx="2.5" opacity="0.2" />
+        <rect x="634" y="792" width="72" height="3" rx="1.5" opacity="0.45" />
+        <rect x="700" y="870" width="96" height="3" rx="1.5" opacity="0.42" />
+        <rect x="760" y="942" width="122" height="4" rx="2" opacity="0.32" />
       </g>
       <g fill="#ffbe5c" className="twinkle twinkle-2">
-        <rect x="684" y="756" width="30" height="3" rx="1.5" opacity="0.55" />
-        <rect x="728" y="766" width="42" height="3" rx="1.5" opacity="0.5" />
-        <rect x="786" y="760" width="30" height="3" rx="1.5" opacity="0.45" />
-        <rect x="716" y="792" width="62" height="3" rx="1.5" opacity="0.3" />
+        <rect x="716" y="812" width="56" height="3" rx="1.5" opacity="0.5" />
+        <rect x="686" y="826" width="38" height="3" rx="1.5" opacity="0.4" />
       </g>
 
-      {/* The canoe */}
-      <ellipse cx="730" cy="893" rx="122" ry="7" fill="#02070a" opacity="0.6" />
-      <path d="M622 858Q726 884 838 852Q822 890 730 891Q640 890 622 858Z" fill="#a4532c" />
-      <path d="M622 858Q726 884 838 852" stroke="#e0a26c" strokeWidth="3" fill="none" />
-      <path d="M700 876L760 846" stroke="#d9b98a" strokeWidth="4" strokeLinecap="round" />
-      <path d="M696 878L684 886" stroke="#d9b98a" strokeWidth="9" strokeLinecap="round" />
+      {/* Rocks */}
+      <g fill="#111c1e">
+        <ellipse cx="664" cy="838" rx="24" ry="11" />
+        <ellipse cx="786" cy="868" rx="30" ry="13" />
+        <ellipse cx="726" cy="950" rx="34" ry="15" />
+        <ellipse cx="880" cy="934" rx="26" ry="11" />
+      </g>
 
       {/* Near bank */}
       <path d="M-60 1000V950Q340 930 760 972T1660 940V1000Z" fill="#020b09" />
@@ -458,9 +456,9 @@ function Defs() {
           <stop offset="0.8" stopColor="#0e2c2e" />
         </linearGradient>
         <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#0d3238" />
-          <stop offset="0.45" stopColor="#0a2730" />
-          <stop offset="1" stopColor="#030d12" />
+          <stop offset="0" stopColor="#2c6b76" />
+          <stop offset="0.5" stopColor="#1b4e5b" />
+          <stop offset="1" stopColor="#0d2f3a" />
         </linearGradient>
         <linearGradient id="falls" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#a9cfe0" stopOpacity="0.45" />
@@ -482,9 +480,14 @@ function Defs() {
           <stop offset="0" stopColor="#dfeaf0" stopOpacity="0.85" />
           <stop offset="1" stopColor="#dfeaf0" stopOpacity="0" />
         </radialGradient>
-        <clipPath id="lakeOnly">
-          <rect x="-60" y="738" width="1720" height="262" />
-        </clipPath>
+        <linearGradient id="passing" gradientUnits="userSpaceOnUse" x1="0" y1="560" x2="0" y2="960">
+          <stop offset="0" stopColor="#020b09" />
+          <stop offset="1" stopColor="#020b09" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0d2c26" />
+          <stop offset="1" stopColor="#040f0d" />
+        </linearGradient>
         <radialGradient id="milkyWay">
           <stop offset="0" stopColor="#9fb7e8" stopOpacity="0.2" />
           <stop offset="1" stopColor="#9fb7e8" stopOpacity="0" />

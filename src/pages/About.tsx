@@ -19,7 +19,7 @@ export default function About() {
         <ValuesSection />
         <Interlude eyebrow="Into the Trees" title="Trails Right Outside Your Door" text="A creek, a waterfall, and a forest to wander through." />
         <HighlightsSection />
-        <Interlude arrive eyebrow="The Lodge" title="Your Own Private Lake" text="A short walk from the cabin, with a canoe waiting." />
+        <Interlude arrive eyebrow="The Lodge" title="A Cabin by the Creek" text="A waterfall outside the glass doors, and your own private lake a short walk away." />
       </ParallaxForest>
       <BookingCta />
     </div>
